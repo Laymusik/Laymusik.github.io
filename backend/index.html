@@ -1,0 +1,110 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Веб-инфраструктура — Алексей Жариков</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: #10151c; color: #edf2f7;
+      font: 17px/1.7 system-ui, sans-serif;
+    }
+    main { max-width: 1000px; margin: auto; padding: 40px 24px 70px; }
+    a { color: #89e4c2; text-underline-offset: 4px; }
+    a:focus-visible { outline: 2px solid #89e4c2; outline-offset: 5px; }
+    h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.15; }
+    h2 { font-size: 24px; }
+    p, li { color: #acbac9; }
+    .label { color: #89e4c2; margin-top: 40px; }
+    .card {
+      background: #19222d; border: 1px solid #303d4b;
+      border-radius: 14px; padding: 26px; margin-top: 20px;
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid .card { margin-top: 0; }
+    .route {
+      color: #89e4c2; font-weight: 600;
+      padding: 18px; border-left: 3px solid #89e4c2;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+    .tags span { border: 1px solid #415367; border-radius: 24px; padding: 4px 12px; }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <a href="/">← В портфолио</a>
+  <p class="label">Учебный проект · Инфраструктура и сопровождение</p>
+  <h1>Веб-сервис с проксированием и мониторингом</h1>
+  <p>
+    Локальный стенд для практики развёртывания сервисов,
+    анализа запросов и восстановления после сбоев.
+  </p>
+
+  <div class="tags">
+    <span>Docker Compose</span><span>Nginx</span>
+    <span>VictoriaMetrics</span><span>Grafana</span>
+    <span>Blackbox Exporter</span>
+  </div>
+
+  <section class="card">
+    <h2>Как работает эта страница</h2>
+    <p class="route">Браузер → Nginx-прокси → Nginx-бэкенд</p>
+    <p>
+      Главную страницу отдаёт первый контейнер. Запросы к
+      <code>/backend/</code> он передаёт второму контейнеру
+      по внутренней Docker-сети и возвращает его ответ браузеру.
+      Эта страница — результат такого запроса.
+    </p>
+  </section>
+
+  <h2>Что реализовано</h2>
+  <div class="grid">
+    <section class="card">
+      <h2>Развёртывание</h2>
+      <p>
+        Сервисы описаны в Docker Compose. Страницы и конфигурация
+        Nginx подключены из папок Windows, данные мониторинга
+        сохраняются в Docker-томе.
+      </p>
+    </section>
+    <section class="card">
+      <h2>Мониторинг</h2>
+      <p>
+        Blackbox Exporter проверяет главную страницу и маршрут
+        бэкенда. VictoriaMetrics собирает результаты каждые
+        пять секунд, Grafana отображает доступность.
+      </p>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Проверенные сценарии</h2>
+    <ul>
+      <li>Проследил один запрос в журналах прокси и бэкенда.</li>
+      <li>Остановил бэкенд и проверил ошибку проксирования,
+          сохранив доступность главной страницы.</li>
+      <li>Запустил бэкенд повторно и проверил восстановление доступа.</li>
+      <li>Настроил собственную страницу ошибки с HTTP-статусом 404.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Результат</h2>
+    <p>
+      Собрал работающий учебный стенд и отработал базовый цикл
+      сопровождения: воспроизведение сбоя, проверка логов,
+      восстановление сервиса и проверка результата.
+    </p>
+    <p>
+      Это описание выполненной практики, а не live-индикатор:
+      текущее состояние сервисов отображается в Grafana.
+      Настройка оповещений пока не завершена.
+    </p>
+  </section>
+</main>
+</body>
+</html>

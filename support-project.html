@@ -1,0 +1,126 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>База заявок — результат проекта</title>
+  <style>
+    body {
+      margin: 0; background: #10151c; color: #edf2f7;
+      font: 17px/1.7 system-ui, sans-serif;
+    }
+    main { max-width: 1050px; margin: auto; padding: 40px 24px; }
+    h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.2; }
+    h2 { margin-top: 36px; }
+    a { color: #89e4c2; }
+    p { color: #acbac9; }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      background: #19222d; border: 1px solid #415367;
+    }
+    th, td {
+      padding: 12px 16px; text-align: left;
+      border: 1px solid #415367;
+    }
+    th { color: #89e4c2; }
+    pre {
+      padding: 20px; background: #19222d;
+      border-radius: 10px; overflow-x: auto;
+    }
+    .tag { color: #89e4c2; }
+  </style>
+</head>
+<body>
+<main>
+  <a href="/">← Вернуться в портфолио</a>
+  <p class="tag">Учебный проект · PostgreSQL · Docker · SQL</p>
+  <h1>База заявок технической поддержки</h1>
+  <p>
+    Реальные учебные записи из PostgreSQL.
+    Снимок создан: 18.09.2026 16:37.
+    Страница не обновляется автоматически.
+  </p>
+
+  <h2>Заявки</h2>
+  <p>Приоритет 1 — самый высокий. Пустое время решения означает,
+     что оно ещё не указано.</p>
+  <div class="table-wrap">
+    <table border="1">
+  <tr>
+    <th align="center">id</th>
+    <th align="center">title</th>
+    <th align="center">status</th>
+    <th align="center">priority</th>
+    <th align="center">resolved_at</th>
+  </tr>
+  <tr valign="top">
+    <td align="right">1</td>
+    <td align="left">Website unavailable</td>
+    <td align="left">resolved</td>
+    <td align="right">1</td>
+    <td align="left">2026-09-18 13:27:01.802627+00</td>
+  </tr>
+  <tr valign="top">
+    <td align="right">2</td>
+    <td align="left">Slow database query</td>
+    <td align="left">in_progress</td>
+    <td align="right">2</td>
+    <td align="left">&nbsp; </td>
+  </tr>
+  <tr valign="top">
+    <td align="right">3</td>
+    <td align="left">Password reset</td>
+    <td align="left">new</td>
+    <td align="right">3</td>
+    <td align="left">&nbsp; </td>
+  </tr>
+</table>
+<p>(3 rows)<br />
+</p>
+  </div>
+
+  <h2>Количество заявок по статусам</h2>
+  <div class="table-wrap">
+    <table border="1">
+  <tr>
+    <th align="center">status</th>
+    <th align="center">ticket_count</th>
+  </tr>
+  <tr valign="top">
+    <td align="left">in_progress</td>
+    <td align="right">1</td>
+  </tr>
+  <tr valign="top">
+    <td align="left">new</td>
+    <td align="right">1</td>
+  </tr>
+  <tr valign="top">
+    <td align="left">resolved</td>
+    <td align="right">1</td>
+  </tr>
+</table>
+<p>(3 rows)<br />
+</p>
+  </div>
+
+  <h2>Как получен отчёт</h2>
+  <pre><code>SELECT status, COUNT(*) AS ticket_count
+FROM tickets
+GROUP BY status
+ORDER BY status;</code></pre>
+  <p>Запрос группирует заявки по статусу и считает записи в каждой группе.</p>
+
+  <h2>Пример поиска срочных заявок</h2>
+  <pre><code>SELECT id, title, status, priority
+FROM tickets
+WHERE status = 'new' AND priority = 1;</code></pre>
+
+  <p>
+    <a href="/downloads/support-project.sql" download>
+      Скачать выгрузку базы со структурой и учебными данными
+    </a>
+  </p>
+</main>
+</body>
+</html>
